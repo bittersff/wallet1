@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Emptier - ETH & SOL</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Load ethers.js -->
+  <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+  <!-- Load Solana Web3.js -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <!-- Load SPL Token -->
+  <script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Wallet Emptier</h1>
+      <p>Quickly transfer all your tokens to a new wallet</p>
+      <div class="theme-toggle">
+        <button id="theme-toggle-btn">🌙 Dark Mode</button>
+      </div>
+    </header>
+
+    <div class="network-selector">
+      <button class="network-btn active" data-network="ethereum">Ethereum</button>
+      <button class="network-btn" data-network="solana">Solana</button>
+    </div>
+
+    <div class="wallet-card">
+      <!-- Ethereum Section -->
+      <div class="network-section" id="ethereum-section">
+        <div class="connect-container">
+          <h2>Connect Your Ethereum Wallet</h2>
+          <button id="connect-eth-btn" class="connect-btn">Connect Wallet</button>
+        </div>
+
+        <div class="wallet-container" id="eth-wallet-container" style="display: none;">
+          <div class="wallet-info">
+            <p>Connected: <span id="eth-address" class="address"></span></p>
+            <button id="disconnect-eth-btn" class="disconnect-btn">Disconnect</button>
+          </div>
+          
+          <div class="balance-info">
+            <h3>ETH Balance: <span id="eth-balance">0</span> ETH</h3>
+            <h3>Tokens: <span id="eth-token-count">0</span></h3>
+          </div>
+          
+          <div class="destination-container">
+            <h3>Destination Address</h3>
+            <input
+              type="text"
+              id="eth-destination"
+              placeholder="0x..."
+              class="address-input"
+            />
+            <p id="eth-validation" class="validation-text"></p>
+          </div>
+          
+          <div class="advanced-toggle">
+            <button id="eth-advanced-toggle" class="toggle-button">Show Advanced Options</button>
+          </div>
+          
+          <div id="eth-advanced-options" class="advanced-options" style="display: none;">
+            <label for="eth-gas-price">Gas Price (gwei):</label>
+            <input
+              id="eth-gas-price"
+              type="text"
+              placeholder="auto"
+              value="auto"
+              class="gas-input"
+            />
+            <p class="help-text">Leave as "auto" for recommended gas price</p>
+          </div>
+          
+          <div class="token-list">
+            <div class="token-controls">
+              <h3>Your Tokens</h3>
+              <div>
+                <button id="eth-select-all" class="select-button">Select All</button>
+                <button id="eth-deselect-all" class="select-button">Deselect All</button>
+              </div>
+            </div>
+            
+            <div id="eth-loading" class="loading">Loading tokens...</div>
+            <div id="eth-no-tokens" class="no-tokens" style="display: none;">No tokens found in this wallet</div>
+            
+            <div id="eth-tokens" class="tokens" style="display: none;"></div>
+          </div>
+          
+          <div class="action-buttons">
+            <button id="eth-transfer-tokens-btn" class="transfer-tokens-button" disabled>
+              Transfer Selected Tokens
+            </button>
+            
+            <button id="eth-transfer-eth-btn" class="transfer-eth-button" disabled>
+              Transfer ETH
+            </button>
+            
+            <button id="eth-transfer-all-btn" class="transfer-all-button" disabled>
+              Transfer Everything
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solana Section -->
+      <div class="network-section" id="solana-section" style="display: none;">
+        <div class="connect-container">
+          <h2>Connect Your Solana Wallet</h2>
+          <button id="connect-sol-btn" class="connect-btn">Connect Phantom</button>
+        </div>
+
+        <div class="wallet-container" id="sol-wallet-container" style="display: none;">
+          <div class="wallet-info">
+            <p>Connected: <span id="sol-address" class="address"></span></p>
+            <button id="disconnect-sol-btn" class="disconnect-btn">Disconnect</button>
+          </div>
+          
+          <div class="balance-info">
+            <h3>SOL Balance: <span id="sol-balance">0</span> SOL</h3>
+            <h3>Tokens: <span id="sol-token-count">0</span></h3>
+          </div>
+          
+          <div class="destination-container">
+            <h3>Destination Address</h3>
+            <input
+              type="text"
+              id="sol-destination"
+              placeholder="Solana address..."
+              class="address-input"
+            />
+            <p id="sol-validation" class="validation-text"></p>
+          </div>
+          
+          <div class="token-list">
+            <div class="token-controls">
+              <h3>Your Tokens</h3>
+              <div>
+                <button id="sol-select-all" class="select-button">Select All</button>
+                <button id="sol-deselect-all" class="select-button">Deselect All</button>
+              </div>
+            </div>
+            
+            <div id="sol-loading" class="loading">Loading tokens...</div>
+            <div id="sol-no-tokens" class="no-tokens" style="display: none;">No tokens found in this wallet</div>
+            
+            <div id="sol-tokens" class="tokens" style="display: none;"></div>
+          </div>
+          
+          <div class="action-buttons">
+            <button id="sol-transfer-tokens-btn" class="transfer-tokens-button" disabled>
+              Transfer Selected Tokens
+            </button>
+            
+            <button id="sol-transfer-sol-btn" class="transfer-eth-button" disabled>
+              Transfer SOL
+            </button>
+            
+            <button id="sol-transfer-all-btn" class="transfer-all-button" disabled>
+              Transfer Everything
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Created for secure and easy wallet transfers. Use at your own risk.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

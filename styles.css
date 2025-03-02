@@ -1,0 +1,468 @@
+/* Base styles */
+:root {
+  --primary-color: #0070f3;
+  --error-color: #f44336;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --text-color: #333;
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --border-color: #ddd;
+  --input-bg: #fff;
+}
+
+/* Dark theme colors */
+.dark-theme {
+  --text-color: #e4e4e4;
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --border-color: #444;
+  --input-bg: #2d2d2d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.6;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  margin: 15px 0;
+}
+
+#theme-toggle-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: all 0.2s ease;
+}
+
+#theme-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Network selector */
+.network-selector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.network-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  margin: 0 10px;
+  cursor: pointer;
+  background-color: #eaeaea;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.dark-theme .network-btn {
+  background-color: #2d2d2d;
+  color: #e4e4e4;
+}
+
+.network-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.network-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Wallet card */
+.wallet-card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Connect container */
+.connect-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.connect-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.connect-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Wallet container */
+.wallet-container {
+  padding: 20px;
+}
+
+.wallet-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.address {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.disconnect-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--error-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.disconnect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.balance-info {
+  margin-bottom: 20px;
+}
+
+.balance-info h3 {
+  margin: 10px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.destination-container {
+  margin-bottom: 20px;
+}
+
+.destination-container h3 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.address-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+.validation-text {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  height: 20px;
+}
+
+/* Advanced options */
+.advanced-toggle {
+  margin-bottom: 15px;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.advanced-options {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.dark-theme .advanced-options {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.gas-input {
+  margin: 8px 0;
+  padding: 8px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  width: 150px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.help-text {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 5px 0;
+}
+
+.dark-theme .help-text {
+  color: #aaa;
+}
+
+/* Token list */
+.token-list {
+  margin-bottom: 20px;
+}
+
+.token-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.token-controls h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.select-button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: transparent;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-color);
+}
+
+.select-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-theme .select-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+}
+
+.dark-theme .loading {
+  color: #aaa;
+}
+
+.no-tokens {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+}
+
+.dark-theme .no-tokens {
+  color: #aaa;
+}
+
+.tokens {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.token-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.token-item:last-child {
+  border-bottom: none;
+}
+
+.token-checkbox {
+  margin-right: 15px;
+}
+
+.token-info {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.token-symbol {
+  font-weight: 600;
+}
+
+.token-balance {
+  font-family: monospace;
+}
+
+.token-status {
+  width: 80px;
+  text-align: right;
+  margin-left: 15px;
+}
+
+.pending {
+  color: var(--warning-color);
+}
+
+.success {
+  color: var(--success-color);
+}
+
+.error {
+  color: var(--error-color);
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.transfer-tokens-button,
+.transfer-eth-button,
+.transfer-all-button {
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.transfer-tokens-button:hover,
+.transfer-eth-button:hover,
+.transfer-all-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transfer-tokens-button {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.transfer-eth-button {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.transfer-all-button {
+  background-color: var(--error-color);
+  color: white;
+  font-weight: 600;
+}
+
+.transfer-tokens-button:disabled,
+.transfer-eth-button:disabled,
+.transfer-all-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .network-selector {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .network-btn {
+    margin: 5px 0;
+    width: 80%;
+  }
+  
+  .token-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .token-controls > div {
+    margin-top: 10px;
+    display: flex;
+  }
+  
+  .select-button {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+}
