@@ -466,11 +466,12 @@ connectEthBtn.addEventListener('click', async function() {
   const disconnectSolBtn = document.getElementById('disconnect-sol-btn');
   
   // Initialize Solana connection
-  solConnection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+  solConnection = new solanaWeb3.Connection('https://solana-mainnet.g.alchemy.com/v2/free', 'confirmed');
   
   // Connect Solana wallet
   connectSolBtn.addEventListener('click', async function() {
     try {
+      // Check if Phantom is installed
       const provider = window?.solana;
       
       if (!provider?.isPhantom) {
@@ -490,24 +491,23 @@ connectEthBtn.addEventListener('click', async function() {
       console.log("Connected to Phantom wallet");
       console.log("Public Key:", solPublicKey.toString());
       
-      // Simple test - request account info directly
-      const accountInfo = await solConnection.getAccountInfo(solPublicKey);
-      console.log("Account Info:", accountInfo);
-
+      // Skip the account info request that's failing
+      // const accountInfo = await solConnection.getAccountInfo(solPublicKey);
+      // console.log("Account Info:", accountInfo);
+      
+      // Update UI
       connectSolBtn.style.display = 'none';
-solWalletContainer.style.display = 'block';
-const pubKeyString = solPublicKey.toString();
-solAddressElement.textContent = `${pubKeyString.substring(0, 6)}...${pubKeyString.substring(pubKeyString.length - 4)}`;
-
-// Fetch SOL balance
-await fetchSolBalance();
-
-// Fetch tokens
-await fetchSolTokens();
-
-// Add event listener for destination address validation
-solDestinationInput.addEventListener('input', validateSolAddress)
-
+      solWalletContainer.style.display = 'block';
+      const pubKeyString = solPublicKey.toString();
+      solAddressElement.textContent = `${pubKeyString.substring(0, 6)}...${pubKeyString.substring(pubKeyString.length - 4)}`;
+      
+      // Fetch SOL balance and tokens
+      await fetchSolBalance();
+      await fetchSolTokens();
+      
+      // Add event listener for destination address validation
+      solDestinationInput.addEventListener('input', validateSolAddress);
+      
     } catch (error) {
       console.error('Error connecting Solana wallet:', error);
       alert('Failed to connect Solana wallet: ' + error.message);
