@@ -107,9 +107,16 @@ document.addEventListener('DOMContentLoaded', function() {
       connectEthBtn.textContent = 'Connecting...';
       connectEthBtn.disabled = true;
       
+      // Add a small delay to ensure MetaMask is ready
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       // Connect to MetaMask
       ethProvider = new ethers.providers.Web3Provider(window.ethereum);
-      await ethProvider.send("eth_requestAccounts", []);
+      
+      // Request account access
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      
+      // Continue with the rest of the setup
       ethSigner = ethProvider.getSigner();
       ethAddress = await ethSigner.getAddress();
       
@@ -130,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
     } catch (error) {
       console.error('Error connecting Ethereum wallet:', error);
-      alert('Failed to connect Ethereum wallet. Please try again.');
+      alert('Failed to connect wallet: ' + (error.message || 'Unknown error'));
       connectEthBtn.textContent = 'Connect Wallet';
       connectEthBtn.disabled = false;
     }
