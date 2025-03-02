@@ -466,7 +466,8 @@ connectEthBtn.addEventListener('click', async function() {
   const disconnectSolBtn = document.getElementById('disconnect-sol-btn');
   
   // Initialize Solana connection
-  solConnection = new solanaWeb3.Connection('https://solana-mainnet.g.alchemy.com/v2/free', 'confirmed');
+  // Try this endpoint instead
+solConnection = new solanaWeb3.Connection("https://api.devnet.solana.com", 'confirmed');
   
   // Connect Solana wallet
   connectSolBtn.addEventListener('click', async function() {
@@ -539,7 +540,7 @@ connectEthBtn.addEventListener('click', async function() {
       // Get all token accounts owned by the user
       const tokenAccounts = await solConnection.getParsedTokenAccountsByOwner(
         solPublicKey,
-        { programId: splToken.TOKEN_PROGRAM_ID }
+        { programId: window.splToken.TOKEN_PROGRAM_ID }
       );
       
       // Process token data
