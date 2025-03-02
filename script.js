@@ -97,51 +97,53 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   // Connect Ethereum wallet
-  connectEthBtn.addEventListener('click', async function() {
-    try {
-      if (!window.ethereum) {
-        alert('Please install MetaMask or another Web3 wallet!');
-        return;
-      }
-      
-      connectEthBtn.textContent = 'Connecting...';
-      connectEthBtn.disabled = true;
-      
-      // Add a small delay to ensure MetaMask is ready
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Connect to MetaMask
-      ethProvider = new ethers.providers.Web3Provider(window.ethereum);
-      
-      // Request account access
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      
-      // Continue with the rest of the setup
-      ethSigner = ethProvider.getSigner();
-      ethAddress = await ethSigner.getAddress();
-      
-      // Update UI
-      connectEthBtn.style.display = 'none';
-      ethWalletContainer.style.display = 'block';
-      ethAddressElement.textContent = `${ethAddress.substring(0, 6)}...${ethAddress.substring(ethAddress.length - 4)}`;
-      
-      // Get ETH balance
-      const ethBalance = await ethProvider.getBalance(ethAddress);
-      ethBalanceElement.textContent = parseFloat(ethers.utils.formatEther(ethBalance)).toFixed(4);
-      
-      // Fetch tokens
-      await fetchEthTokens();
-      
-      // Add event listener for destination address validation
-      ethDestinationInput.addEventListener('input', validateEthAddress);
-      
-    } catch (error) {
-      console.error('Error connecting Ethereum wallet:', error);
-      alert('Failed to connect wallet: ' + (error.message || 'Unknown error'));
-      connectEthBtn.textContent = 'Connect Wallet';
-      connectEthBtn.disabled = false;
+  // Replace the Ethereum connection code in script.js:
+
+connectEthBtn.addEventListener('click', async function() {
+  try {
+    if (!window.ethereum) {
+      alert('Please install MetaMask or another Web3 wallet!');
+      return;
     }
-  });
+    
+    connectEthBtn.textContent = 'Connecting...';
+    connectEthBtn.disabled = true;
+    
+    // Direct MetaMask request instead of using ethers first
+    const accounts = await window.ethereum.request({ 
+      method: 'eth_requestAccounts' 
+    });
+    
+    if (accounts.length === 0) {
+      throw new Error('No accounts returned from MetaMask');
+    }
+    
+    ethAddress = accounts[0];
+    ethProvider = new ethers.providers.Web3Provider(window.ethereum);
+    ethSigner = ethProvider.getSigner();
+    
+    // Update UI
+    connectEthBtn.style.display = 'none';
+    ethWalletContainer.style.display = 'block';
+    ethAddressElement.textContent = `${ethAddress.substring(0, 6)}...${ethAddress.substring(ethAddress.length - 4)}`;
+    
+    // Get ETH balance
+    const ethBalance = await ethProvider.getBalance(ethAddress);
+    ethBalanceElement.textContent = parseFloat(ethers.utils.formatEther(ethBalance)).toFixed(4);
+    
+    // Fetch tokens
+    await fetchEthTokens();
+    
+    // Add event listener for destination address validation
+    ethDestinationInput.addEventListener('input', validateEthAddress);
+    
+  } catch (error) {
+    console.error('Error connecting Ethereum wallet:', error);
+    alert('Failed to connect wallet: ' + (error.message || 'Unknown error'));
+    connectEthBtn.textContent = 'Connect Wallet';
+    connectEthBtn.disabled = false;
+  }
+});
   
   // Fetch Ethereum tokens (simplified for demo - in real app would call an API like Covalent)
   async function fetchEthTokens() {
