@@ -471,7 +471,6 @@ connectEthBtn.addEventListener('click', async function() {
   // Connect Solana wallet
   connectSolBtn.addEventListener('click', async function() {
     try {
-      // Check if Phantom is installed
       const provider = window?.solana;
       
       if (!provider?.isPhantom) {
@@ -488,24 +487,30 @@ connectEthBtn.addEventListener('click', async function() {
       solPublicKey = response.publicKey;
       solWallet = provider;
       
-      // Update UI
+      console.log("Connected to Phantom wallet");
+      console.log("Public Key:", solPublicKey.toString());
+      
+      // Simple test - request account info directly
+      const accountInfo = await solConnection.getAccountInfo(solPublicKey);
+      console.log("Account Info:", accountInfo);
+
       connectSolBtn.style.display = 'none';
-      solWalletContainer.style.display = 'block';
-      const pubKeyString = solPublicKey.toString();
-      solAddressElement.textContent = `${pubKeyString.substring(0, 6)}...${pubKeyString.substring(pubKeyString.length - 4)}`;
-      
-      // Fetch SOL balance
-      await fetchSolBalance();
-      
-      // Fetch tokens
-      await fetchSolTokens();
-      
-      // Add event listener for destination address validation
-      solDestinationInput.addEventListener('input', validateSolAddress);
-      
+solWalletContainer.style.display = 'block';
+const pubKeyString = solPublicKey.toString();
+solAddressElement.textContent = `${pubKeyString.substring(0, 6)}...${pubKeyString.substring(pubKeyString.length - 4)}`;
+
+// Fetch SOL balance
+await fetchSolBalance();
+
+// Fetch tokens
+await fetchSolTokens();
+
+// Add event listener for destination address validation
+solDestinationInput.addEventListener('input', validateSolAddress)
+
     } catch (error) {
       console.error('Error connecting Solana wallet:', error);
-      alert('Failed to connect Solana wallet. Please try again.');
+      alert('Failed to connect Solana wallet: ' + error.message);
       connectSolBtn.textContent = 'Connect Phantom';
       connectSolBtn.disabled = false;
     }
@@ -514,7 +519,9 @@ connectEthBtn.addEventListener('click', async function() {
   // Fetch SOL balance
   async function fetchSolBalance() {
     try {
+      console.log("Fetching SOL balance for:", solPublicKey.toString());
       const balance = await solConnection.getBalance(solPublicKey);
+      console.log("Raw SOL balance received:", balance);
       solBalanceElement.textContent = (balance / solanaWeb3.LAMPORTS_PER_SOL).toFixed(4);
     } catch (error) {
       console.error('Error fetching SOL balance:', error);
